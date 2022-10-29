@@ -12,14 +12,9 @@ const Page = () => {
     avatar: null,
   }) as any;
 
-  const {
-    handleSubmit,
-    setError,
-    setValue,
-    clearErrors,
-    reset,
-    formState: { errors },
-  } = useForm({ defaultValues: formDt.current });
+  const { handleSubmit, setError, setValue, clearErrors, reset } = useForm({
+    defaultValues: formDt.current,
+  });
 
   const { refetch, isFetching } = useQuery(
     ["login"],
@@ -68,8 +63,6 @@ const Page = () => {
                     placeholder="Select the file here!"
                   />
                 )}
-
-                {v.getMessage(errors, "avatar")}
               </div>
 
               <Button
