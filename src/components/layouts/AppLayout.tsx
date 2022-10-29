@@ -8,7 +8,7 @@ const AppLayout = () => {
       <Outlet />
 
       <hr className="m-0"></hr>
-      <Pane className="text-center">
+      <Pane className="text-center" padding={10}>
         <Link is={RouteLink} to="/" className="mx-1">
           Home
         </Link>

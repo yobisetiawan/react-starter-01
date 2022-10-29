@@ -8,8 +8,9 @@ import About from "./pages/About";
 import ForgotPasword from "./pages/Auth/ForgotPasword";
 import ForgotPaswordToken from "./pages/Auth/ForgotPaswordToken";
 import Login from "./pages/Auth/Login";
+import Register from "./pages/Auth/Register";
 import ResetPassword from "./pages/Auth/ResetPassword";
-import ChangePassword from "./pages/ChangePassword";
+ 
 import CrudExample from "./pages/CrudExample";
 import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
@@ -25,11 +26,13 @@ function App() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="crud-example" element={<CrudExample />} />
           <Route path="profile" element={<Profile />} />
-          <Route path="change-password" element={<ChangePassword />} />
+          
           <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
           <Route path="forgot-password" element={<ForgotPasword />} />
           <Route path="forgot-password-token" element={<ForgotPaswordToken />} />
           <Route path="reset-password" element={<ResetPassword />} />
+
           <Route path="*" element={<NoMatch404 />} />
         </Route>
       </Routes>
