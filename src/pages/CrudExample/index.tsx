@@ -109,7 +109,10 @@ const Page = () => {
 
   const handleEdit = (item: any) => {
     selectedItem.current = item;
-    reset(item);
+    reset({
+      title: item.title,
+      description: item.description,
+    });
     setIsShown(true);
   };
 
