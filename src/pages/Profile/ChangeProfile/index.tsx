@@ -14,6 +14,7 @@ const Page = () => {
 
   const formDt = useRef({
     name: user?.name ?? "",
+    relations: "avatar"
   });
 
   const {

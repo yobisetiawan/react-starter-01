@@ -1,33 +1,58 @@
 import { useQuery } from "@tanstack/react-query";
-import { Button, Pane } from "evergreen-ui";
-import { memo } from "react";
+import { Button, Dialog, Pane } from "evergreen-ui";
+import { useAtom } from "jotai";
+import { memo, useState } from "react";
 
-//import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { API, ManualFetchAPI } from "../../../configs/api";
 
-import v from "../../../configs/validations";
+import { authUserAtom } from "../../../storage/auth";
 
 const Page = () => {
-  //const n = useNavigate();
+  const n = useNavigate();
 
-  const { isFetching } = useQuery(["login"], () => API.userDeleteAccount(), {
-    ...ManualFetchAPI,
-    onError(err: any) {
-      v.setServerError(err, {});
-    },
-    onSuccess(dt: any) {},
-  });
+  const [isShown, setIsShown] = useState(false);
+  const [, setUser] = useAtom(authUserAtom);
+
+  const { isFetching, refetch } = useQuery(
+    ["delete-account"],
+    () => API.userDeleteAccount(),
+    {
+      ...ManualFetchAPI,
+      onSuccess(dt: any) {
+        localStorage.removeItem("token");
+        setUser(null);
+
+        n("/login");
+      },
+    }
+  );
 
   return (
     <div>
       <Pane>
         <div className="row">
           <div className="col-lg-6">
+            <Dialog
+              isShown={isShown}
+              title="Dialog title"
+              intent="danger"
+              onCloseComplete={() => setIsShown(false)}
+              confirmLabel="Delete"
+              onConfirm={() => {
+                refetch();
+              }}
+            >
+              Are you sure you want to delete your account?
+            </Dialog>
             <Button
               isLoading={isFetching}
               marginRight={16}
               appearance="primary"
               intent="danger"
+              onClick={() => {
+                setIsShown(true);
+              }}
             >
               Delete Account
             </Button>

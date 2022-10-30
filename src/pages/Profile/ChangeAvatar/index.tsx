@@ -1,12 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import { Button, FilePicker, Pane, toaster } from "evergreen-ui";
+import { useAtom } from "jotai";
 import { memo, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { API, ManualFetchAPI } from "../../../configs/api";
 
 import v from "../../../configs/validations";
+import { authUserAtom } from "../../../storage/auth";
 
 const Page = () => {
+  const [, setUser] = useAtom(authUserAtom);
   const [resetFileInput, setResetFileInput] = useState(false);
   const formDt = useRef({
     avatar: null,
@@ -28,6 +31,7 @@ const Page = () => {
         toaster.success("Avatar successfully updated!");
         setResetFileInput(true);
         reset();
+        setUser(dt?.data?.data);
       },
     }
   );
@@ -36,6 +40,7 @@ const Page = () => {
     let dt = new FormData();
 
     dt.append("avatar", data.avatar ? data["avatar"][0] ?? null : null);
+    dt.append("relations", "avatar");
     formDt.current = dt;
     refetch();
   };

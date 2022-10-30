@@ -24,7 +24,7 @@ function App() {
           <Route index element={<Home />} />
           <Route path="about" element={<About />} />
           <Route path="dashboard" element={<Dashboard />} />
-          <Route path="crud-example" element={<CrudExample />} />
+          <Route path="example/sample" element={<CrudExample />} />
           <Route path="profile" element={<Profile />} />
           
           <Route path="login" element={<Login />} />

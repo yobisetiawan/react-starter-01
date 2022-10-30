@@ -1,3 +1,4 @@
+import { Avatar } from "evergreen-ui";
 import { useAtom } from "jotai";
 import React, { memo } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -33,10 +34,10 @@ const AppSidebar = ({ children }: Props) => {
               <Link to="/dashboard">Dashboard</Link>
             </li>
             <li>
-              <Link to="/crud-example">CRUD Example</Link>
+              <Link to="/example/sample">CRUD Simple</Link>
             </li>
             <li>
-              <Link to="/crud-example">CRUD Complex</Link>
+              <Link to="/example/complex">CRUD Complex</Link>
             </li>
             <li>
               <Link to="/profile">Profile</Link>
@@ -44,7 +45,15 @@ const AppSidebar = ({ children }: Props) => {
           </ul>
 
           <div className="mt-5">
+            <div>
+              <Avatar
+                src={user?.avatar?.url}
+                name={user?.name}
+                size={80}
+              />
+            </div>
             <div>{user?.name}</div>
+
             <div>
               <a href="/logout" onClick={onLogout}>
                 Logout

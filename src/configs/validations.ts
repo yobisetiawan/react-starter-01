@@ -11,7 +11,7 @@ const validations = {
     setServerError: (err: any, formDt: any, setError?: undefined | ((key: any, params: any) => void)) => {
         toaster.danger( err?.response?.data?.message ?? err?.message);
         Object.keys(formDt).forEach(function (key) {
-            let v = err?.response?.data?.errors;
+            let v = err?.response?.data?.errors ?? [];
             if (v[key]) {
                 if (typeof setError !== 'undefined') {
                     setError(key, {

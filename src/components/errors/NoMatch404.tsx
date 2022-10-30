@@ -5,7 +5,7 @@ import { styles } from "../../configs/styles";
 
 const Page = () => {
   return (
-    <div>
+    <div className="text-center p-5 my-5">
       <Heading is="h1" size={styles.fontSizeH1}>
         404, Nothing Here!
       </Heading>
