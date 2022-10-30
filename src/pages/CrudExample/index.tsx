@@ -1,18 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import {
-  Button,
-  DeleteIcon,
-  Dialog,
-  EditIcon,
-  Heading,
-  IconButton,
-  Pagination,
-  Pane,
-  Table,
-  TextareaField,
-  TextInputField,
-  toaster,
-} from "evergreen-ui";
+import { Dialog, Heading, Pane, toaster } from "evergreen-ui";
 
 import { memo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -20,10 +7,19 @@ import AppSidebar from "../../components/layouts/AppSidebar";
 import { API, ManualFetchAPI } from "../../configs/api";
 import { styles } from "../../configs/styles";
 import v from "../../configs/validations";
+import Form from "./Form";
+import TableList from "./TableList";
+
+export interface ParamProps {
+  relations: string;
+  page: number;
+  type: string;
+  q: string;
+}
 
 const Page = () => {
   const selectedItem = useRef(null) as any;
-  const params = useRef({
+  const params = useRef<ParamProps>({
     relations: "",
     page: 1,
     type: "pagination",
@@ -37,16 +33,10 @@ const Page = () => {
 
   const formDt = useRef(defaultForm);
 
-  const [isShown, setIsShown] = useState(false);
+  const [modalForm, setModalForm] = useState(false);
   const [modalDel, setModalDel] = useState(false);
 
-  const {
-    register,
-    handleSubmit,
-    setError,
-    reset,
-    formState: { errors },
-  } = useForm();
+  const form = useForm();
 
   const listDt = useQuery(["list-sample"], () =>
     API.exampleSampleList(params.current)
@@ -54,8 +44,8 @@ const Page = () => {
 
   const onFormSuccess = (msg?: string) => {
     toaster.success(msg ?? "Data successfully saved!");
-    reset(defaultForm);
-    setIsShown(false);
+    form.reset(defaultForm);
+    setModalForm(false);
     setModalDel(false);
 
     selectedItem.current = null;
@@ -68,7 +58,7 @@ const Page = () => {
     {
       ...ManualFetchAPI,
       onError(err: any) {
-        v.setServerError(err, formDt.current, setError);
+        v.setServerError(err, formDt.current, form.setError);
       },
       onSuccess(dt: any) {
         onFormSuccess();
@@ -87,6 +77,15 @@ const Page = () => {
     }
   );
 
+  const onSubmit = (data: any) => {
+    formDt.current = data;
+    if (selectedItem.current?.id) {
+      putDt.refetch();
+    } else {
+      storeDt.refetch();
+    }
+  };
+
   const destroyDt = useQuery(
     ["destroy-sample"],
     () => API.exampleSampleDestroy(selectedItem.current?.id),
@@ -98,27 +97,23 @@ const Page = () => {
     }
   );
 
-  const onSubmit = (data: any) => {
-    formDt.current = data;
-    if (selectedItem.current?.id) {
-      putDt.refetch();
-    } else {
-      storeDt.refetch();
-    }
-  };
-
   const handleEdit = (item: any) => {
     selectedItem.current = item;
-    reset({
+    form.reset({
       title: item.title,
       description: item.description,
     });
-    setIsShown(true);
+    setModalForm(true);
   };
 
   const handleDelete = (item: any) => {
     setModalDel(true);
     selectedItem.current = item;
+  };
+
+  const handleCreate = () => {
+    form.reset(defaultForm);
+    setModalForm(true);
   };
 
   return (
@@ -142,97 +137,25 @@ const Page = () => {
             Are you sure you want to delete this data?
           </Dialog>
           <Dialog
-            isShown={isShown}
+            isShown={modalForm}
             title="Sample Form"
             onCloseComplete={() => {
-              setIsShown(false);
-              reset(defaultForm);
+              setModalForm(false);
+              form.reset(defaultForm);
             }}
             hasFooter={false}
             confirmLabel="Save"
           >
-            <form onSubmit={handleSubmit(onSubmit)} className={"pb-4"}>
-              <TextInputField
-                label="Title"
-                placeholder="Title"
-                {...register("title", v.required)}
-                validationMessage={v.getMessage(errors, "title")}
-              />
-              <TextareaField
-                label="Descriptionn"
-                placeholder="Description"
-                {...register("description", v.required)}
-                validationMessage={v.getMessage(errors, "description")}
-              />
-              <Button
-                type="submit"
-                isLoading={storeDt.isFetching || putDt.isFetching}
-                marginRight={16}
-                appearance="primary"
-              >
-                Submit
-              </Button>
-            </form>
+            <Form form={form} isLoading={false} onSubmit={onSubmit} />
           </Dialog>
 
-          <Button
-            marginBottom={20}
-            onClick={() => {
-              reset(defaultForm);
-              setIsShown(true);
-            }}
-          >
-            Add New
-          </Button>
-
-          <Table marginBottom={20}>
-            <Table.Head>
-              <Table.TextHeaderCell>Title</Table.TextHeaderCell>
-              <Table.TextHeaderCell>
-                Descriptionn
-              </Table.TextHeaderCell>
-              <Table.TextHeaderCell flexBasis={100} flexShrink={0} flexGrow={0}>
-                Actions
-              </Table.TextHeaderCell>
-            </Table.Head>
-            <Table.Body>
-              {(listDt.data?.data?.data ?? []).map((item: any) => (
-                <Table.Row  key={item.id}>
-                  <Table.TextCell>{item.title}</Table.TextCell>
-                  <Table.TextCell  >
-                    {item.description}
-                  </Table.TextCell>
-                  <Table.TextCell flexBasis={100} flexShrink={0} flexGrow={0}>
-                    <IconButton
-                      icon={EditIcon}
-                      marginRight={4}
-                      onClick={() => {
-                        handleEdit(item);
-                      }}
-                    />
-                    <IconButton
-                      icon={DeleteIcon}
-                      marginRight={4}
-                      intent="danger"
-                      onClick={() => {
-                        handleDelete(item);
-                      }}
-                    />
-                  </Table.TextCell>
-                </Table.Row>
-              ))}
-            </Table.Body>
-          </Table>
-
-          <Pagination
-            page={listDt.data?.data?.meta?.current_page ?? 1}
-            totalPages={listDt.data?.data?.meta?.last_page ?? 0}
-            marginBottom={20}
-            onPageChange={(page) => {
-              params.current = { ...params.current, page: page };
-              listDt.refetch();
-            }}
-          ></Pagination>
+          <TableList
+            handleDelete={handleDelete}
+            handleEdit={handleEdit}
+            params={params}
+            listDt={listDt}
+            handleCreate={handleCreate}
+          />
         </Pane>
       </div>
     </AppSidebar>

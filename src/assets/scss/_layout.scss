@@ -29,8 +29,18 @@
   }
 }
 
-
-.app-loading{
+.app-loading {
   height: 100vh;
   width: 100%;
+}
+
+.app-search-input {
+  position: relative;
+  .app-search-btn {
+    position: absolute;
+    right: 5px;
+    top: 3px;
+    z-index: 2;
+    
+  }
 }
