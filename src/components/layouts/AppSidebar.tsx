@@ -61,7 +61,7 @@ const AppSidebar = ({ children }: Props) => {
             </div>
           </div>
         </div>
-        <div className="app-main-content">{children}</div>
+        <div className="app-main-content flex-grow-1">{children}</div>
       </div>
     </GetCheckUser>
   );

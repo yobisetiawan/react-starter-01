@@ -188,16 +188,20 @@ const Page = () => {
           <Table marginBottom={20}>
             <Table.Head>
               <Table.TextHeaderCell>Title</Table.TextHeaderCell>
-              <Table.TextHeaderCell>Descriptionn</Table.TextHeaderCell>
+              <Table.TextHeaderCell>
+                Descriptionn
+              </Table.TextHeaderCell>
               <Table.TextHeaderCell flexBasis={100} flexShrink={0} flexGrow={0}>
                 Actions
               </Table.TextHeaderCell>
             </Table.Head>
             <Table.Body>
               {(listDt.data?.data?.data ?? []).map((item: any) => (
-                <Table.Row key={item.id}>
+                <Table.Row  key={item.id}>
                   <Table.TextCell>{item.title}</Table.TextCell>
-                  <Table.TextCell>{item.description}</Table.TextCell>
+                  <Table.TextCell  >
+                    {item.description}
+                  </Table.TextCell>
                   <Table.TextCell flexBasis={100} flexShrink={0} flexGrow={0}>
                     <IconButton
                       icon={EditIcon}
