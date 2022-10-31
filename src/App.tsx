@@ -10,6 +10,7 @@ import ForgotPaswordToken from "./pages/Auth/ForgotPaswordToken";
 import Login from "./pages/Auth/Login";
 import Register from "./pages/Auth/Register";
 import ResetPassword from "./pages/Auth/ResetPassword";
+import CrudComplex from "./pages/CrudComplex";
  
 import CrudExample from "./pages/CrudExample";
 import Dashboard from "./pages/Dashboard";
@@ -25,6 +26,7 @@ function App() {
           <Route path="about" element={<About />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="example/sample" element={<CrudExample />} />
+          <Route path="example/complex" element={<CrudComplex />} />
           <Route path="profile" element={<Profile />} />
           
           <Route path="login" element={<Login />} />

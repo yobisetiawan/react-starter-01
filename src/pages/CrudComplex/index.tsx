@@ -42,7 +42,7 @@ const Page = () => {
 
   const form = useForm();
 
-  const listDt = useQuery(["list-sample"], () =>
+  const listDt = useQuery(["list-sample-complex"], () =>
     API.exampleSampleList(params.current)
   );
 
@@ -57,7 +57,7 @@ const Page = () => {
   };
 
   const storeDt = useQuery(
-    ["store-sample"],
+    ["store-sample-complex"],
     () => API.exampleSamplePost(formDt.current),
     {
       ...ManualFetchAPI,
@@ -71,7 +71,7 @@ const Page = () => {
   );
 
   const putDt = useQuery(
-    ["put-sample"],
+    ["put-sample-complex"],
     () => API.exampleSamplePut(selectedItem.current?.id, formDt.current),
     {
       ...ManualFetchAPI,
@@ -91,7 +91,7 @@ const Page = () => {
   };
 
   const destroyDt = useQuery(
-    ["destroy-sample"],
+    ["destroy-sample-complex"],
     () => API.exampleSampleDestroy(selectedItem.current?.id),
     {
       ...ManualFetchAPI,
@@ -124,7 +124,7 @@ const Page = () => {
     <AppSidebar>
       <div className="p-3">
         <Heading is="h1" size={styles.fontSizeH1}>
-          CRUD Example
+          CRUD Complex Example
         </Heading>
         <hr />
         <Pane>
