@@ -1,20 +1,16 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Dialog, Heading, Pane, toaster } from "evergreen-ui";
-import { useAtom } from "jotai";
-
-import { memo, useRef, useState } from "react";
+import { memo, Suspense, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import AppSidebar from "../../components/layouts/AppSidebar";
 import { API, ParamProps } from "../../configs/api";
 import { styles } from "../../configs/styles";
 import v from "../../configs/validations";
-import { SampleCollectionAtom } from "../../storage/collection";
+
 import Form from "./Form";
 import TableList from "./TableList";
 
 const Page = () => {
-  const [listSample] = useAtom(SampleCollectionAtom);
-
   const selectedItem = useRef(null) as any;
   const params = useRef<ParamProps>({
     relations: ["sample"].join(),
@@ -138,12 +134,13 @@ const Page = () => {
             hasFooter={false}
             confirmLabel="Save"
           >
-            <Form
-              form={form}
-              isLoading={saveDt.isLoading}
-              onSubmit={onSubmit}
-              listSample={listSample}
-            />
+            <Suspense>
+              <Form
+                form={form}
+                isLoading={saveDt.isLoading}
+                onSubmit={onSubmit}
+              />
+            </Suspense>
           </Dialog>
           <TableList
             handleForm={handleForm}

@@ -4,19 +4,21 @@ import {
   TextareaField,
   TextInputField,
 } from "evergreen-ui";
+import { useAtom } from "jotai";
 
 import { memo } from "react";
 import { FieldValues, UseFormReturn } from "react-hook-form";
 import v from "../../configs/validations";
+import { SampleCollectionAtom } from "../../storage/collection";
 
 interface Props {
   form: UseFormReturn<FieldValues, any>;
   onSubmit: (data: any) => void;
   isLoading: boolean;
-  listSample: any;
 }
 
-const Component = ({ form, onSubmit, isLoading, listSample }: Props) => {
+const Component = ({ form, onSubmit, isLoading }: Props) => {
+  const [listSample2] = useAtom(SampleCollectionAtom);
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className={"pb-4"}>
       <TextInputField
@@ -37,7 +39,7 @@ const Component = ({ form, onSubmit, isLoading, listSample }: Props) => {
         validationMessage={v.getMessage(form.formState.errors, "sample_id")}
       >
         <option value={""}>Select One</option>
-        {listSample.map((item: any) => (
+        {listSample2.map((item: any) => (
           <option value={item.id} key={item.id}>
             {item.title}
           </option>
