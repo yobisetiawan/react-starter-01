@@ -1,28 +1,23 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Dialog, Heading, Pane, toaster } from "evergreen-ui";
+import { useAtom } from "jotai";
 
 import { memo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import AppSidebar from "../../components/layouts/AppSidebar";
-import { API, ManualFetchAPI } from "../../configs/api";
+import { API, ParamProps } from "../../configs/api";
 import { styles } from "../../configs/styles";
 import v from "../../configs/validations";
+import { SampleCollectionAtom } from "../../storage/collection";
 import Form from "./Form";
 import TableList from "./TableList";
 
-export interface ParamProps {
-  relations: string;
-  page: number;
-  type: string;
-  q: string;
-  sort_by: string;
-  order_by: string;
-}
-
 const Page = () => {
+  const [listSample] = useAtom(SampleCollectionAtom);
+
   const selectedItem = useRef(null) as any;
   const params = useRef<ParamProps>({
-    relations: "",
+    relations: ["sample"].join(),
     page: 1,
     type: "pagination",
     q: "",
@@ -33,6 +28,7 @@ const Page = () => {
   const defaultForm = {
     title: "",
     description: "",
+    sample_id: "",
   };
 
   const formDt = useRef(defaultForm);
@@ -42,8 +38,10 @@ const Page = () => {
 
   const form = useForm();
 
-  const listDt = useQuery(["list-sample-complex"], () =>
-    API.exampleSampleList(params.current)
+  const listDt = useQuery(
+    ["list-sample-complex"],
+    () => API.exampleSample2List(params.current),
+    { staleTime: Infinity }
   );
 
   const onFormSuccess = (msg?: string) => {
@@ -56,11 +54,13 @@ const Page = () => {
     listDt.refetch();
   };
 
-  const storeDt = useQuery(
-    ["store-sample-complex"],
-    () => API.exampleSamplePost(formDt.current),
+  const saveDt = useMutation(
+    ["put-sample-complex"],
+    () =>
+      selectedItem.current?.id
+        ? API.exampleSample2Put(selectedItem.current?.id, formDt.current)
+        : API.exampleSample2Post(formDt.current),
     {
-      ...ManualFetchAPI,
       onError(err: any) {
         v.setServerError(err, formDt.current, form.setError);
       },
@@ -70,54 +70,42 @@ const Page = () => {
     }
   );
 
-  const putDt = useQuery(
-    ["put-sample-complex"],
-    () => API.exampleSamplePut(selectedItem.current?.id, formDt.current),
-    {
-      ...ManualFetchAPI,
-      onSuccess(dt: any) {
-        onFormSuccess();
-      },
-    }
-  );
-
-  const onSubmit = (data: any) => {
-    formDt.current = data;
-    if (selectedItem.current?.id) {
-      putDt.refetch();
-    } else {
-      storeDt.refetch();
-    }
-  };
-
-  const destroyDt = useQuery(
+  const destroyDt = useMutation(
     ["destroy-sample-complex"],
-    () => API.exampleSampleDestroy(selectedItem.current?.id),
+    () => API.exampleSample2Destroy(selectedItem.current?.id),
     {
-      ...ManualFetchAPI,
       onSuccess(dt: any) {
         onFormSuccess("Data successfully deleted!");
       },
+      onError(err: any) {
+        v.setServerError(err);
+      },
     }
   );
-
-  const handleEdit = (item: any) => {
-    selectedItem.current = item;
-    form.reset({
-      title: item.title,
-      description: item.description,
-    });
-    setModalForm(true);
-  };
 
   const handleDelete = (item: any) => {
     setModalDel(true);
     selectedItem.current = item;
   };
 
-  const handleCreate = () => {
-    form.reset(defaultForm);
+  const handleForm = (item?: any) => {
+    if (item) {
+      selectedItem.current = item;
+      form.reset({
+        title: item.title,
+        description: item.description,
+        sample_id: item.sample?.id ?? "",
+      });
+    } else {
+      selectedItem.current = null;
+      form.reset(defaultForm);
+    }
     setModalForm(true);
+  };
+
+  const onSubmit = (data: any) => {
+    formDt.current = data;
+    saveDt.mutate();
   };
 
   return (
@@ -135,7 +123,7 @@ const Page = () => {
             onCloseComplete={() => setModalDel(false)}
             confirmLabel="Delete"
             onConfirm={() => {
-              destroyDt.refetch();
+              destroyDt.mutate();
             }}
           >
             Are you sure you want to delete this data?
@@ -152,15 +140,14 @@ const Page = () => {
           >
             <Form
               form={form}
-              isLoading={storeDt.isFetching || putDt.isFetching}
+              isLoading={saveDt.isLoading}
               onSubmit={onSubmit}
+              listSample={listSample}
             />
           </Dialog>
-
           <TableList
-            handleCreate={handleCreate}
+            handleForm={handleForm}
             handleDelete={handleDelete}
-            handleEdit={handleEdit}
             params={params}
             listDt={listDt}
           />

@@ -16,22 +16,15 @@ import {
 } from "evergreen-ui";
 import { memo, useState } from "react";
 import { useForm } from "react-hook-form";
-import { ParamProps } from ".";
+import { ParamProps } from "../../configs/api";
 
 interface Props {
   listDt: UseQueryResult<AxiosResponse<any, any>, unknown>;
   params: React.MutableRefObject<ParamProps>;
-  handleEdit: (item: any) => void;
+  handleForm: (item?: any) => void;
   handleDelete: (item: any) => void;
-  handleCreate: () => void;
 }
-const Component = ({
-  listDt,
-  params,
-  handleEdit,
-  handleDelete,
-  handleCreate,
-}: Props) => {
+const Component = ({ listDt, params, handleForm, handleDelete }: Props) => {
   const [showFilter, setShowFilter] = useState(false);
   const search = useForm();
   const filter = useForm({
@@ -58,7 +51,7 @@ const Component = ({
   return (
     <div>
       <div className="mb-2 d-flex justify-content-between">
-        <Button onClick={handleCreate}>Add New</Button>
+        <Button onClick={handleForm}>Add New</Button>
 
         <div className="d-flex">
           <form
@@ -124,7 +117,7 @@ const Component = ({
       <Table marginBottom={20}>
         <Table.Head>
           <Table.TextHeaderCell>Title</Table.TextHeaderCell>
-          <Table.TextHeaderCell>Descriptionn</Table.TextHeaderCell>
+          <Table.TextHeaderCell>Description</Table.TextHeaderCell>
           <Table.TextHeaderCell flexBasis={100} flexShrink={0} flexGrow={0}>
             Actions
           </Table.TextHeaderCell>
@@ -141,7 +134,7 @@ const Component = ({
                   icon={EditIcon}
                   marginRight={4}
                   onClick={() => {
-                    handleEdit(item);
+                    handleForm(item);
                   }}
                 />
                 <IconButton

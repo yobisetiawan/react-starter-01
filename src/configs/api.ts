@@ -24,6 +24,15 @@ export const ManualFetchAPI = {
     enabled: false
 }
 
+export interface ParamProps {
+    relations: string;
+    page: number;
+    type: string;
+    q: string;
+    sort_by: string;
+    order_by: string;
+}
+
 export const API = {
     login: (data: any) => axios.post(apiUrl + '/auth/login', data),
     logout: () => axios.post(apiUrl + '/auth/logout', {}, config()),
@@ -38,5 +47,10 @@ export const API = {
     exampleSamplePost: (data: any) => axios.post(apiUrl + '/example/samples', data, config()),
     exampleSamplePut: (id: string, data: any) => axios.put(apiUrl + '/example/samples/' + id, data, config()),
     exampleSampleDestroy: (id: string) => axios.delete(apiUrl + '/example/samples/' + id, config()),
+
+    exampleSample2List: (data: any) => axios.get(apiUrl + '/example/samples2', config(data)),
+    exampleSample2Post: (data: any) => axios.post(apiUrl + '/example/samples2', data, config()),
+    exampleSample2Put: (id: string, data: any) => axios.put(apiUrl + '/example/samples2/' + id, data, config()),
+    exampleSample2Destroy: (id: string) => axios.delete(apiUrl + '/example/samples2/' + id, config()),
 
 }

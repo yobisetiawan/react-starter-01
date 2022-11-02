@@ -1775,6 +1775,11 @@
   resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-4.13.4.tgz#77043e066586359eca40859803acc4a44e2a2dc8"
   integrity sha512-DMIy6tgGehYoRUFyoR186+pQspOicyZNSGvBWxPc2CinHjWOQ7DPnGr9zmn/kE9xK4Zd3GXd25Nj3X20+TF6Lw==
 
+"@tanstack/query-core@^4.14.1":
+  version "4.14.1"
+  resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-4.14.1.tgz#a74c4da03e79a8be07fa5ab2ebc12865146915e2"
+  integrity sha512-mUejKoFDe4NZB8jQJR1uuAl6IwvkUpOD2m8NcuTVPOu0pcxeeFPdrnHaljwOEFPtlqXoiiIIQGYy6whjCMN+iQ==
+
 "@tanstack/react-query-devtools@^4.13.0":
   version "4.13.4"
   resolved "https://registry.yarnpkg.com/@tanstack/react-query-devtools/-/react-query-devtools-4.13.4.tgz#d631961fbb0803d2246cdf39dd2e35f443a88b6e"
@@ -6056,6 +6061,11 @@ jest@^27.4.3:
     "@jest/core" "^27.5.1"
     import-local "^3.0.2"
     jest-cli "^27.5.1"
+
+jotai-tanstack-query@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/jotai-tanstack-query/-/jotai-tanstack-query-0.4.0.tgz#f8568160efb76f884156dc61a584fabafa5c5651"
+  integrity sha512-K3++3iIKGm34hyHm0i+8cMM7c2agDq/GdE7xJ2Asa+VwyEBQVRudfdGEv3HCYLp6smNcqWUxn7iQddue/DXe8g==
 
 jotai@^1.9.0:
   version "1.9.0"
