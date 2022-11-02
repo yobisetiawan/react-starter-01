@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Dialog, Heading, Pane, toaster } from "evergreen-ui";
+import { Dialog, Heading, Pane, SideSheet, toaster } from "evergreen-ui";
 import { memo, Suspense, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import AppSidebar from "../../components/layouts/AppSidebar";
@@ -124,15 +124,13 @@ const Page = () => {
           >
             Are you sure you want to delete this data?
           </Dialog>
-          <Dialog
+
+          <SideSheet
             isShown={modalForm}
-            title="Sample Form"
             onCloseComplete={() => {
               setModalForm(false);
               form.reset(defaultForm);
             }}
-            hasFooter={false}
-            confirmLabel="Save"
           >
             <Suspense>
               <Form
@@ -141,7 +139,8 @@ const Page = () => {
                 onSubmit={onSubmit}
               />
             </Suspense>
-          </Dialog>
+          </SideSheet>
+
           <TableList
             handleForm={handleForm}
             handleDelete={handleDelete}

@@ -1,6 +1,7 @@
-import { Button, TextareaField, TextInputField } from "evergreen-ui";
+import { Button, Heading, TextareaField, TextInputField } from "evergreen-ui";
 import { memo } from "react";
 import { FieldValues, UseFormReturn } from "react-hook-form";
+import { styles } from "../../configs/styles";
 import v from "../../configs/validations";
 
 interface Props {
@@ -11,7 +12,12 @@ interface Props {
 
 const Component = ({ form, onSubmit, isLoading }: Props) => {
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className={"pb-4"}>
+    <form onSubmit={form.handleSubmit(onSubmit)} className={"p-4"}>
+      <Heading is="h2" size={styles.fontSizeH2}>
+        Sample Form
+      </Heading>
+      <hr />
+
       <TextInputField
         label="Title"
         placeholder="Title"
