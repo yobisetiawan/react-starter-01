@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import {
   Button,
   Card,
@@ -12,7 +12,7 @@ import { memo, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { Link as RouteLink, useNavigate } from "react-router-dom";
 import CheckUser from "../../../components/layouts/CheckUser";
-import { API, ManualFetchAPI } from "../../../configs/api";
+import { API } from "../../../configs/api";
 import { styles } from "../../../configs/styles";
 import v from "../../../configs/validations";
 import { authTokenAtom } from "../../../storage/auth";
@@ -33,11 +33,10 @@ const Page = () => {
 
   const [, setToken] = useAtom(authTokenAtom);
 
-  const { refetch, isFetching } = useQuery(
+  const { mutate, isLoading } = useMutation(
     ["login"],
     () => API.login(formDt.current),
     {
-      ...ManualFetchAPI,
       onError(err: any) {
         v.setServerError(err, formDt.current, setError);
       },
@@ -51,7 +50,7 @@ const Page = () => {
 
   const onSubmit = (data: any) => {
     formDt.current = data;
-    refetch();
+    mutate();
   };
 
   return (
@@ -82,7 +81,7 @@ const Page = () => {
                   />
                   <Button
                     type="submit"
-                    isLoading={isFetching}
+                    isLoading={isLoading}
                     marginRight={16}
                     appearance="primary"
                   >

@@ -1,11 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { Button, Card, Heading, Pane, TextInputField } from "evergreen-ui";
 import { useAtom } from "jotai";
 import { memo, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import CheckUser from "../../../components/layouts/CheckUser";
-import { API, ManualFetchAPI } from "../../../configs/api";
+import { API } from "../../../configs/api";
 import { styles } from "../../../configs/styles";
 import v from "../../../configs/validations";
 import { authTokenAtom } from "../../../storage/auth";
@@ -27,11 +27,10 @@ const Page = () => {
 
   const [, setToken] = useAtom(authTokenAtom);
 
-  const { refetch, isFetching } = useQuery(
+  const { mutate, isLoading } = useMutation(
     ["register"],
     () => API.register(formDt.current),
     {
-      ...ManualFetchAPI,
       onError(err: any) {
         v.setServerError(err, formDt.current, setError);
       },
@@ -45,7 +44,7 @@ const Page = () => {
 
   const onSubmit = (data: any) => {
     formDt.current = { ...data, password_confirmation: data?.password };
-    refetch();
+    mutate();
   };
 
   return (
@@ -90,7 +89,7 @@ const Page = () => {
                     type="submit"
                     marginRight={16}
                     appearance="primary"
-                    isLoading={isFetching}
+                    isLoading={isLoading}
                   >
                     Submit
                   </Button>
