@@ -11,6 +11,7 @@ import { useAtom } from "jotai";
 import { memo, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { Link as RouteLink, useNavigate } from "react-router-dom";
+import CheckUser from "../../../components/layouts/CheckUser";
 import { API, ManualFetchAPI } from "../../../configs/api";
 import { styles } from "../../../configs/styles";
 import v from "../../../configs/validations";
@@ -22,7 +23,7 @@ const Page = () => {
     email: "",
     password: "",
   });
-  
+
   const {
     register,
     handleSubmit,
@@ -54,53 +55,55 @@ const Page = () => {
   };
 
   return (
-    <Pane>
-      <div className="container py-5">
-        <div className="row justify-content-center">
-          <div className="col-lg-6">
-            <Heading is="h1" marginBottom={20} size={styles.fontSizeH1}>
-              Login {`Hello ${process.env.REACT_APP_NAME}`}
-            </Heading>
+    <CheckUser>
+      <Pane>
+        <div className="container py-5">
+          <div className="row justify-content-center">
+            <div className="col-lg-6">
+              <Heading is="h1" marginBottom={20} size={styles.fontSizeH1}>
+                Login {`Hello ${process.env.REACT_APP_NAME}`}
+              </Heading>
 
-            <Card elevation={1} padding={20}>
-              <form onSubmit={handleSubmit(onSubmit)}>
-                <TextInputField
-                  label="Email"
-                  type={"email"}
-                  placeholder="Enter your email"
-                  {...register("email", v.required)}
-                  validationMessage={v.getMessage(errors, "email")}
-                />
-                <TextInputField
-                  label="Password"
-                  type={"password"}
-                  placeholder="Enter your password"
-                  {...register("password", v.required)}
-                  validationMessage={v.getMessage(errors, "password")}
-                />
-                <Button
-                  type="submit"
-                  isLoading={isFetching}
-                  marginRight={16}
-                  appearance="primary"
-                >
-                  Submit
-                </Button>
-              </form>
-            </Card>
+              <Card elevation={1} padding={20}>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <TextInputField
+                    label="Email"
+                    type={"email"}
+                    placeholder="Enter your email"
+                    {...register("email", v.required)}
+                    validationMessage={v.getMessage(errors, "email")}
+                  />
+                  <TextInputField
+                    label="Password"
+                    type={"password"}
+                    placeholder="Enter your password"
+                    {...register("password", v.required)}
+                    validationMessage={v.getMessage(errors, "password")}
+                  />
+                  <Button
+                    type="submit"
+                    isLoading={isFetching}
+                    marginRight={16}
+                    appearance="primary"
+                  >
+                    Submit
+                  </Button>
+                </form>
+              </Card>
 
-            <div className="mt-3">
-              <Link is={RouteLink} to="/forgot-password" className="me-3">
-                Forgot Password
-              </Link>
-              <Link is={RouteLink} to="/register" className="me-3">
-                Register
-              </Link>
+              <div className="mt-3">
+                <Link is={RouteLink} to="/forgot-password" className="me-3">
+                  Forgot Password
+                </Link>
+                <Link is={RouteLink} to="/register" className="me-3">
+                  Register
+                </Link>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </Pane>
+      </Pane>
+    </CheckUser>
   );
 };
 
