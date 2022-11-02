@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Dialog, Heading, Pane, toaster } from "evergreen-ui";
 
-import { memo, useRef, useState } from "react";
+import { memo, Suspense, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import AppSidebar from "../../components/layouts/AppSidebar";
 import { API, ParamProps } from "../../configs/api";
@@ -133,11 +133,13 @@ const Page = () => {
             hasFooter={false}
             confirmLabel="Save"
           >
-            <Form
-              form={form}
-              isLoading={saveDt.isLoading}
-              onSubmit={onSubmit}
-            />
+            <Suspense>
+              <Form
+                form={form}
+                isLoading={saveDt.isLoading}
+                onSubmit={onSubmit}
+              />
+            </Suspense>
           </Dialog>
 
           <TableList
