@@ -11,7 +11,7 @@ const Page = () => {
         <div className="row justify-content-center">
           <div className="col-md-6">
             <Heading is="h1" marginBottom={20} size={styles.fontSizeH1}>
-              Home
+              Home2
             </Heading>
             <Paragraph>
               Lorem Ipsum is simply dummy text of the printing and typesetting

@@ -1,6 +1,6 @@
-import { Link, Pane } from "evergreen-ui";
+import { Pane } from "evergreen-ui";
 import React, { memo } from "react";
-import { Link as RouteLink, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
 const AppLayout = () => {
   return (

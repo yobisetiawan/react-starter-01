@@ -59,7 +59,7 @@ const Page = () => {
         <div className="row justify-content-center">
           <div className="col-lg-6">
             <Heading is="h1" marginBottom={20} size={styles.fontSizeH1}>
-              Login
+              Login {`Hello ${process.env.REACT_APP_NAME}`}
             </Heading>
 
             <Card elevation={1} padding={20}>
