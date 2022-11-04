@@ -1,0 +1,23 @@
+.app-table {
+  width: 100%;
+  border: 1px solid #edeff5;
+
+  th,
+  td {
+    padding: 10px;
+    border-bottom: 1px solid #edeff5;
+  }
+
+  th {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    text-transform: uppercase;
+    color: #696f8c;
+    font-size: 12px;
+    background-color: #f9fafc;
+  }
+
+  td {
+    font-size: 12px;
+  }
+}

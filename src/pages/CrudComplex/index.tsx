@@ -1,4 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
+import dayjs from "dayjs";
 import { Dialog, Heading, Pane, SideSheet, toaster } from "evergreen-ui";
 import { memo, Suspense, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -11,7 +12,7 @@ import Form from "./Form";
 import TableList from "./TableList";
 
 const Page = () => {
-  const selectedItem = useRef(null) as any;
+  const selectedItem = useRef<any>(null);
   const params = useRef<ParamProps>({
     relations: ["sample"].join(),
     page: 1,
@@ -25,6 +26,8 @@ const Page = () => {
     title: "",
     description: "",
     sample_id: "",
+    date: "",
+    date_time: "",
   };
 
   const formDt = useRef(defaultForm);
@@ -91,6 +94,8 @@ const Page = () => {
         title: item.title,
         description: item.description,
         sample_id: item.sample?.id ?? "",
+        date: item.date,
+        date_time: item.date_time,
       });
     } else {
       selectedItem.current = null;
@@ -100,6 +105,7 @@ const Page = () => {
   };
 
   const onSubmit = (data: any) => {
+    data.date_time = dayjs(data.date_time).format("YYYY-MM-DD HH:mm");
     formDt.current = data;
     saveDt.mutate();
   };
@@ -126,6 +132,7 @@ const Page = () => {
           </Dialog>
 
           <SideSheet
+            width={800}
             isShown={modalForm}
             onCloseComplete={() => {
               setModalForm(false);

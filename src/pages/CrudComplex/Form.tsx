@@ -1,9 +1,17 @@
 import {
+  Autocomplete,
   Button,
+  Checkbox,
+  Combobox,
   Heading,
+  RadioGroup,
   SelectField,
   SelectMenu,
+  Strong,
+  Switch,
+  TagInput,
   TextareaField,
+  TextInput,
   TextInputField,
 } from "evergreen-ui";
 import { useAtom } from "jotai";
@@ -23,6 +31,15 @@ interface Props {
 const Component = ({ form, onSubmit, isLoading }: Props) => {
   const [listSample2] = useAtom(SampleCollectionAtom);
   const [selected, setSelected] = useState<any>(null);
+  const [values, setValues] = useState(["Kauri", "Willow"]);
+
+  const [options] = useState([
+    { label: "Read-only", value: "read-only" },
+    { label: "Write", value: "write" },
+    { label: "Restricted", value: "restricted" },
+  ]);
+
+  const [r, setR] = useState("restricted");
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className={"p-4"}>
@@ -56,8 +73,8 @@ const Component = ({ form, onSubmit, isLoading }: Props) => {
         label="Date Time"
         placeholder="Date Time"
         type={"datetime-local"}
-        {...form.register("date", v.required)}
-        validationMessage={v.getMessage(form.formState.errors, "date")}
+        {...form.register("date_time", v.required)}
+        validationMessage={v.getMessage(form.formState.errors, "date_time")}
       />
 
       <SelectField
@@ -73,24 +90,91 @@ const Component = ({ form, onSubmit, isLoading }: Props) => {
         ))}
       </SelectField>
 
+      <SelectMenu
+        title="Select name"
+        options={listSample2.map((item: any) => ({
+          label: item.title,
+          value: item.id,
+        }))}
+        selected={selected?.value ?? ""}
+        onSelect={(item) => {
+          setSelected(item);
+          form.setValue("sample_id", item.value);
+        }}
+      >
+        <TextInputField
+          label="Sample Searchable"
+          placeholder="Select One"
+          value={selected?.label ?? ""}
+          readOnly
+          validationMessage={v.getMessage(form.formState.errors, "sample_id")}
+        />
+      </SelectMenu>
+
       <div className="mb-4">
-        <SelectMenu
-          title="Select name"
-          options={listSample2.map((item: any) => ({
-            label: item.title,
-            value: item.id,
-          }))}
-          selected={selected?.value ?? ""}
-          onSelect={(item) => setSelected(item)}
-        >
-          <TextInputField
-            label="Sample Searchable"
-            placeholder="Select One"
-            value={selected?.label ?? ""}
-            readOnly
-            validationMessage={v.getMessage(form.formState.errors, "sample_id")}
-          />
-        </SelectMenu>
+        <div className="mb-2">
+          <Strong>Tag Input</Strong>
+        </div>
+        <TagInput
+          inputProps={{ placeholder: "Add trees..." }}
+          values={values}
+          onChange={(values) => {
+            setValues(values);
+          }}
+        />
+      </div>
+
+      <div className="mb-4">
+        <Combobox
+          width="100%"
+          items={["Banana", "Orange", "Apple", "Mango"]}
+          onChange={(selected) => console.log(selected)}
+          placeholder="Fruit"
+          selectedItem={"Banana"}
+          autocompleteProps={{
+            popoverMinWidth: 300,
+            // Used for the title in the autocomplete.
+            title: "Fruit",
+          }}
+        />
+      </div>
+
+      <Autocomplete
+        title="Fruits"
+        onChange={(changedItem) => console.log(changedItem)}
+        items={["Apple", "Apricot", "Banana", "Cherry", "Cucumber"]}
+      >
+        {(props) => {
+          const { getInputProps, getRef, inputValue } = props;
+          return (
+            <TextInput
+              placeholder="Fruits"
+              ref={getRef}
+              {...getInputProps()}
+              value={inputValue}
+            />
+          );
+        }}
+      </Autocomplete>
+
+      <div className="mb-4">
+        <Checkbox label="Aggre with anything" checked={true} />
+      </div>
+
+      <div className="mb-4">
+        <Switch />
+      </div>
+
+      <div
+        className="mb-4"
+        style={{ position: "relative", overflow: "hidden" }}
+      >
+        <RadioGroup
+          label="Permissions"
+          value={r}
+          options={options}
+          onChange={(event) => setR(event.target.value)}
+        />
       </div>
 
       <Button

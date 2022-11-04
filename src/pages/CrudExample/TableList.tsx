@@ -4,14 +4,11 @@ import {
   Button,
   DeleteIcon,
   EditIcon,
-  EmptyState,
   IconButton,
   Pagination,
   Pane,
   SearchIcon,
   SelectField,
-  Strong,
-  Table,
   TextInput,
 } from "evergreen-ui";
 import { memo, useState } from "react";
@@ -47,6 +44,8 @@ const Component = ({ listDt, params, handleForm, handleDelete }: Props) => {
     };
     listDt.refetch();
   };
+
+  const listDtRess = listDt.data?.data;
 
   return (
     <div>
@@ -114,56 +113,46 @@ const Component = ({ listDt, params, handleForm, handleDelete }: Props) => {
         </div>
       </div>
 
-      <Table marginBottom={20}>
-        <Table.Head>
-          <Table.TextHeaderCell>Title</Table.TextHeaderCell>
-          <Table.TextHeaderCell>Description</Table.TextHeaderCell>
-          <Table.TextHeaderCell flexBasis={100} flexShrink={0} flexGrow={0}>
-            Actions
-          </Table.TextHeaderCell>
-        </Table.Head>
-        <Table.Body>
-          {(listDt.data?.data?.data ?? []).map((item: any) => (
-            <Table.Row key={item.id}>
-              <Table.TextCell>
-                <Strong>{item.title}</Strong>
-              </Table.TextCell>
-              <Table.TextCell>{item.description}</Table.TextCell>
-              <Table.TextCell flexBasis={100} flexShrink={0} flexGrow={0}>
-                <IconButton
-                  icon={EditIcon}
-                  marginRight={4}
-                  onClick={() => {
-                    handleForm(item);
-                  }}
-                />
-                <IconButton
-                  icon={DeleteIcon}
-                  marginRight={4}
-                  intent="danger"
-                  onClick={() => {
-                    handleDelete(item);
-                  }}
-                />
-              </Table.TextCell>
-            </Table.Row>
-          ))}
-          {(listDt.data?.data?.data ?? []).length === 0 && (
-            <EmptyState
-              background="light"
-              title="No Data Found"
-              orientation="horizontal"
-              icon={<SearchIcon color="#C1C4D6" />}
-              iconBgColor="#EDEFF5"
-              description="Table data is empty or try adjusting your filter!"
-            />
-          )}
-        </Table.Body>
-      </Table>
+      <table className="app-table mb-3">
+        <tr>
+          <th>Title</th>
+          <th>Description</th>
+
+          <th style={{ width: 100 }}>Actions</th>
+        </tr>
+        {(listDtRess?.data ?? []).map((item: any) => (
+          <tr>
+            <td> {item.title}</td>
+            <td> {item.description}</td>
+            <td>
+              <IconButton
+                icon={EditIcon}
+                marginRight={4}
+                onClick={() => {
+                  handleForm(item);
+                }}
+              />
+              <IconButton
+                icon={DeleteIcon}
+                marginRight={4}
+                intent="danger"
+                onClick={() => {
+                  handleDelete(item);
+                }}
+              />
+            </td>
+          </tr>
+        ))}
+        {(listDtRess?.data ?? []).length === 0 && (
+          <tr>
+            <td colSpan={100}>No Data</td>
+          </tr>
+        )}
+      </table>
 
       <Pagination
-        page={listDt.data?.data?.meta?.current_page ?? 0}
-        totalPages={listDt.data?.data?.meta?.last_page ?? 0}
+        page={listDtRess?.meta?.current_page ?? 0}
+        totalPages={listDtRess?.meta?.last_page ?? 0}
         marginBottom={20}
         onPreviousPage={() => {
           params.current = { ...params.current, page: params.current.page - 1 };
@@ -174,8 +163,10 @@ const Component = ({ listDt, params, handleForm, handleDelete }: Props) => {
           listDt.refetch();
         }}
         onPageChange={(page) => {
-          params.current = { ...params.current, page: page };
-          listDt.refetch();
+          if (params.current.page !== page) {
+            params.current = { ...params.current, page: page };
+            listDt.refetch();
+          }
         }}
       ></Pagination>
     </div>

@@ -42,6 +42,9 @@
     top: 3px;
     z-index: 2;
     cursor: pointer;
-    
   }
+}
+
+div[role="dialog"][data-state="entering"] {
+  opacity: 0 !important;
 }

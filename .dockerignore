@@ -13,3 +13,5 @@ Dockerfile.prod
 .env.prod
 
 sh
+
+yarn.lock
