@@ -55,3 +55,12 @@ div[role="dialog"][data-state="entering"] {
     box-shadow: 0 0 0 2px rgba($color: #343434, $alpha: 0.1) !important;
   }
 }
+
+div[aria-current="true"][role="option"] {
+  &::before {
+    background-color: #343434 !important;
+  }
+  span {
+    color: #343434 !important;
+  }
+}

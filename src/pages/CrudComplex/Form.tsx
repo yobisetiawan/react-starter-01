@@ -51,7 +51,7 @@ const Component = ({ form, onSubmit, isLoading }: Props) => {
       <hr />
 
       <TextInputField
-        label="Title" 
+        label="Title"
         placeholder="Title"
         {...form.register("title", v.required)}
         validationMessage={v.getMessage(form.formState.errors, "title")}
@@ -91,27 +91,6 @@ const Component = ({ form, onSubmit, isLoading }: Props) => {
           </option>
         ))}
       </SelectField>
-
-      <SelectMenu
-        title="Select name"
-        options={listSample2.map((item: any) => ({
-          label: item.title,
-          value: item.id,
-        }))}
-        selected={selected?.value ?? ""}
-        onSelect={(item) => {
-          setSelected(item);
-          form.setValue("sample_id", item.value);
-        }}
-      >
-        <TextInputField
-          label="Sample Searchable"
-          placeholder="Select One"
-          value={selected?.label ?? ""}
-          readOnly
-          validationMessage={v.getMessage(form.formState.errors, "sample_id")}
-        />
-      </SelectMenu>
 
       <div className="mb-4">
         <div className="mb-2">
