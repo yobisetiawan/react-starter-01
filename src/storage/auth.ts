@@ -9,7 +9,7 @@ export const authUserAtom = atom<any>(null)
 authUserAtom.debugLabel = 'authUserAtom'
 
 export const refetchAuthUserAtom = atom(
-    null,  
+    null,
     (get, set, update) => {
         set(authUserAtom, async () => {
             let ress = await API.user();
@@ -17,3 +17,10 @@ export const refetchAuthUserAtom = atom(
         })
     }
 )
+
+export const authForgotPasswordAtom = atom({
+    token: '',
+    email: ''
+})
+
+authForgotPasswordAtom.debugLabel = 'authForgotPasswordAtom'

@@ -37,6 +37,9 @@ export const API = {
     login: (data: any) => axios.post(apiUrl + '/auth/login', data),
     logout: () => axios.post(apiUrl + '/auth/logout', {}, config()),
     register: (data: any) => axios.post(apiUrl + '/auth/register', data),
+    forgotPassword: (data: any) => axios.post(apiUrl + '/auth/forgot-password', data),
+    resetPassword: (data: any) => axios.post(apiUrl + '/auth/reset-password', data),
+
     user: () => axios.get(apiUrl + '/user?relations=' + (['avatar'].join()), config()),
     userChangeProfile: (data: any) => axios.post(apiUrl + '/user/change-profile', data, config()),
     userChangeAvatar: (data: any) => axios.post(apiUrl + '/user/change-avatar', data, config()),

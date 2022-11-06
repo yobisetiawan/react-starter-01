@@ -1,23 +1,60 @@
-import { Button, Card, Heading, Pane, TextInputField } from "evergreen-ui";
-import { memo } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { Button, Card, Heading, Pane, TextInputField, toaster } from "evergreen-ui";
+import { useAtom } from "jotai";
+import { memo, useRef } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import CheckUser from "../../../components/layouts/CheckUser";
+import { API } from "../../../configs/api";
 import { styles } from "../../../configs/styles";
 import v from "../../../configs/validations";
+import { authForgotPasswordAtom } from "../../../storage/auth";
 
 const Page = () => {
   const n = useNavigate();
+
+  const [FP] = useAtom(authForgotPasswordAtom);
+
+  const formDt = useRef({
+    email: "",
+    code: "",
+    password: "",
+    password_confirmation: "",
+  });
+
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
-  } = useForm();
+  } = useForm({ defaultValues: formDt.current });
+
+  const { mutate, isLoading } = useMutation(
+    ["forgot-password"],
+    () => API.resetPassword(formDt.current),
+    {
+      onError(err: any) {
+        v.setServerError(err, formDt.current, setError);
+      },
+      onSuccess(dt: any) {
+        toaster.success("Yourm password successfully updated!");
+        n("/login"); 
+      },
+    }
+  );
 
   const onSubmit = (data: any) => {
-    console.log(data);
-    n("/login");
+    formDt.current = {
+      ...data,
+      email: FP.email,
+    };
+    mutate();
   };
+
+  if (FP.email === "") {
+    return <Navigate to="/forgot-password" replace />;
+  }
+
   return (
     <CheckUser>
       <Pane>
@@ -31,6 +68,12 @@ const Page = () => {
               <Card elevation={1} padding={20}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                   <TextInputField
+                    label="Token"
+                    placeholder="Enter your Code"
+                    {...register("code", v.required)}
+                    validationMessage={v.getMessage(errors, "password")}
+                  />
+                  <TextInputField
                     label="New Password"
                     type={"password"}
                     placeholder="Enter your password"
@@ -41,10 +84,18 @@ const Page = () => {
                     label="Confirm Password"
                     type={"password"}
                     placeholder="Enter your password"
-                    {...register("confirm_password", v.required)}
-                    validationMessage={v.getMessage(errors, "confirm_password")}
+                    {...register("password_confirmation", v.required)}
+                    validationMessage={v.getMessage(
+                      errors,
+                      "password_confirmation"
+                    )}
                   />
-                  <Button type="submit" marginRight={16} appearance="primary">
+                  <Button
+                    type="submit"
+                    isLoading={isLoading}
+                    marginRight={16}
+                    appearance="primary"
+                  >
                     Submit
                   </Button>
                 </form>

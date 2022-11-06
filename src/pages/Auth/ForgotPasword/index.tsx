@@ -1,24 +1,52 @@
+import { useMutation } from "@tanstack/react-query";
 import { Button, Card, Heading, Pane, TextInputField } from "evergreen-ui";
-import { memo } from "react";
+import { useAtom } from "jotai";
+import { memo, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import CheckUser from "../../../components/layouts/CheckUser";
+import { API } from "../../../configs/api";
 
 import { styles } from "../../../configs/styles";
 import v from "../../../configs/validations";
+import { authForgotPasswordAtom } from "../../../storage/auth";
 
 const Page = () => {
   const n = useNavigate();
 
+  const [, setFP] = useAtom(authForgotPasswordAtom);
+
+  const formDt = useRef({
+    email: "",
+  });
+
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
-  } = useForm();
+  } = useForm({ defaultValues: formDt.current });
+
+  const { mutate, isLoading } = useMutation(
+    ["forgot-password"],
+    () => API.forgotPassword(formDt.current),
+    {
+      onError(err: any) {
+        v.setServerError(err, formDt.current, setError);
+      },
+      onSuccess(dt: any) {
+        setFP({
+          token: "",
+          email: formDt.current.email,
+        });
+        n("/reset-password");
+      },
+    }
+  );
 
   const onSubmit = (data: any) => {
-    console.log(data);
-    n("/forgot-password-token");
+    formDt.current = data;
+    mutate();
   };
 
   return (
@@ -40,7 +68,12 @@ const Page = () => {
                     validationMessage={v.getMessage(errors, "email")}
                   />
 
-                  <Button marginRight={16} appearance="primary" type="submit">
+                  <Button
+                    marginRight={16}
+                    isLoading={isLoading}
+                    appearance="primary"
+                    type="submit"
+                  >
                     Submit
                   </Button>
                 </form>
