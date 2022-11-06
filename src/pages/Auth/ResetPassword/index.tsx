@@ -37,7 +37,7 @@ const Page = () => {
         v.setServerError(err, formDt.current, setError);
       },
       onSuccess(dt: any) {
-        toaster.success("Yourm password successfully updated!");
+        toaster.success("Your password successfully updated!");
         n("/login"); 
       },
     }
@@ -71,7 +71,7 @@ const Page = () => {
                     label="Token"
                     placeholder="Enter your Code"
                     {...register("code", v.required)}
-                    validationMessage={v.getMessage(errors, "password")}
+                    validationMessage={v.getMessage(errors, "code")}
                   />
                   <TextInputField
                     label="New Password"
