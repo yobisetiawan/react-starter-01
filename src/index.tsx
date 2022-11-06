@@ -7,6 +7,8 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "jotai";
 import JotaiDevTool from "./components/JotaiDevTool";
+import { theme } from "./configs/theme";
+import { ThemeProvider } from "evergreen-ui";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -20,7 +22,9 @@ root.render(
       <JotaiDevTool />
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
-          <App />
+          <ThemeProvider value={theme}>
+            <App />
+          </ThemeProvider>
         </BrowserRouter>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>

@@ -51,7 +51,7 @@ const Component = ({ form, onSubmit, isLoading }: Props) => {
       <hr />
 
       <TextInputField
-        label="Title"
+        label="Title" 
         placeholder="Title"
         {...form.register("title", v.required)}
         validationMessage={v.getMessage(form.formState.errors, "title")}
@@ -187,7 +187,7 @@ const Component = ({ form, onSubmit, isLoading }: Props) => {
         type="submit"
         isLoading={isLoading}
         marginRight={16}
-        appearance="primary"
+        appearance="app_btn"
       >
         Submit
       </Button>

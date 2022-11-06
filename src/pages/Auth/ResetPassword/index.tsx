@@ -94,7 +94,7 @@ const Page = () => {
                     type="submit"
                     isLoading={isLoading}
                     marginRight={16}
-                    appearance="primary"
+                    appearance="app_btn"
                   >
                     Submit
                   </Button>

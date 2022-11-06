@@ -19,6 +19,7 @@ import { authTokenAtom } from "../../../storage/auth";
 
 const Page = () => {
   const n = useNavigate();
+
   const formDt = useRef({
     email: "",
     password: "",
@@ -83,7 +84,7 @@ const Page = () => {
                     type="submit"
                     isLoading={isLoading}
                     marginRight={16}
-                    appearance="primary"
+                    appearance="app_btn"
                   >
                     Submit
                   </Button>

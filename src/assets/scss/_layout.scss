@@ -7,7 +7,7 @@
     min-height: 100vh;
     flex-shrink: 0;
     padding: 20px;
-    background-color: rgb(34, 62, 98);
+    background-color: #343434;
     &,
     a {
       color: #fff;
@@ -27,31 +27,4 @@
     display: block;
     overflow: auto;
   }
-}
-
-.app-loading {
-  height: 100vh;
-  width: 100%;
-}
-
-.app-search-input {
-  position: relative;
-  .app-search-btn {
-    position: absolute;
-    right: 5px;
-    top: 3px;
-    z-index: 2;
-    cursor: pointer;
-  }
-}
-
-div[role="dialog"][data-state="entering"] {
-  opacity: 0 !important;
-}
-
-.app-fixed-warning {
-  position: fixed;
-  bottom: 0;
-  left: 230px;
-  right: 0;
 }

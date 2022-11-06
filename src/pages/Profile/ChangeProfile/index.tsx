@@ -61,7 +61,7 @@ const Page = () => {
                 type="submit"
                 isLoading={isFetching}
                 marginRight={16}
-                appearance="primary"
+                appearance="app_btn"
               >
                 Submit
               </Button>

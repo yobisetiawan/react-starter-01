@@ -105,7 +105,7 @@ const Component = ({ listDt, params, handleForm, handleDelete }: Props) => {
                 </div>
               </div>
               <div className="d-flex justify-content-end">
-                <Button type="submit" appearance="primary">
+                <Button type="submit" appearance="app_btn">
                   Apply Filter
                 </Button>
               </div>
@@ -115,64 +115,76 @@ const Component = ({ listDt, params, handleForm, handleDelete }: Props) => {
       </div>
 
       <table className="app-table mb-3">
-        <tr>
-          <th>Title</th>
-          <th>Description</th>
-          <th>Sample</th>
-          <th style={{ width: 100 }}>Actions</th>
-        </tr>
-        {(listDtRess?.data ?? []).map((item: any) => (
+        <thead>
           <tr>
-            <td> {item.title}</td>
-            <td> {item.description}</td>
-            <td>
-              <Text>{item.sample?.title || "-"}</Text>
-            </td>
-            <td>
-              <IconButton
-                icon={EditIcon}
-                marginRight={4}
-                onClick={() => {
-                  handleForm(item);
-                }}
-              />
-              <IconButton
-                icon={DeleteIcon}
-                marginRight={4}
-                intent="danger"
-                onClick={() => {
-                  handleDelete(item);
-                }}
-              />
-            </td>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Sample</th>
+            <th style={{ width: 100 }}>Actions</th>
           </tr>
-        ))}
-        {(listDtRess?.data ?? []).length === 0 && (
-          <tr>
-            <td colSpan={100}>No Data</td>
-          </tr>
-        )}
+        </thead>
+        <tbody>
+          {(listDtRess?.data ?? []).map((item: any) => (
+            <tr key={item.id}>
+              <td> {item.title}</td>
+              <td> {item.description}</td>
+              <td>
+                <Text>{item.sample?.title || "-"}</Text>
+              </td>
+              <td>
+                <IconButton
+                  icon={EditIcon}
+                  marginRight={4}
+                  onClick={() => {
+                    handleForm(item);
+                  }}
+                />
+                <IconButton
+                  icon={DeleteIcon}
+                  marginRight={4}
+                  intent="danger"
+                  onClick={() => {
+                    handleDelete(item);
+                  }}
+                />
+              </td>
+            </tr>
+          ))}
+          {(listDtRess?.data ?? []).length === 0 && (
+            <tr>
+              <td colSpan={100}>No Data</td>
+            </tr>
+          )}
+        </tbody>
       </table>
 
-      <Pagination
-        page={listDtRess?.meta?.current_page ?? 0}
-        totalPages={listDtRess?.meta?.last_page ?? 0}
-        marginBottom={20}
-        onPreviousPage={() => {
-          params.current = { ...params.current, page: params.current.page - 1 };
-          listDt.refetch();
-        }}
-        onNextPage={() => {
-          params.current = { ...params.current, page: params.current.page + 1 };
-          listDt.refetch();
-        }}
-        onPageChange={(page) => {
-          if (params.current.page !== page) {
-            params.current = { ...params.current, page: page };
+      <div className="app-pagination">
+        <Pagination
+          page={listDtRess?.meta?.current_page ?? 0}
+          totalPages={listDtRess?.meta?.last_page ?? 0}
+          marginBottom={20}
+          onPreviousPage={() => {
+            params.current = {
+              ...params.current,
+              page: params.current.page - 1,
+            };
             listDt.refetch();
-          }
-        }}
-      ></Pagination>
+          }}
+          onNextPage={() => {
+            params.current = {
+              ...params.current,
+              page: params.current.page + 1,
+            };
+            listDt.refetch();
+          }}
+          onPageChange={(page) => {
+            if (params.current.page !== page) {
+              params.current = { ...params.current, page: page };
+              listDt.refetch();
+            }
+          }}
+        ></Pagination>
+      </div>
     </div>
   );
 };

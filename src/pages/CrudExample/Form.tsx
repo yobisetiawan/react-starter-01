@@ -34,7 +34,7 @@ const Component = ({ form, onSubmit, isLoading }: Props) => {
         type="submit"
         isLoading={isLoading}
         marginRight={16}
-        appearance="primary"
+        appearance="app_btn"
       >
         Submit
       </Button>

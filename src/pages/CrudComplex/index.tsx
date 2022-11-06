@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
+ 
 import dayjs from "dayjs";
-import { Dialog, Heading, Pane, SideSheet, toaster } from "evergreen-ui";
+import { Dialog, Heading, Pane, SideSheet, toaster, useTheme } from "evergreen-ui";
 import { memo, Suspense, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import AppSidebar from "../../components/layouts/AppSidebar";
@@ -12,6 +13,9 @@ import Form from "./Form";
 import TableList from "./TableList";
 
 const Page = () => {
+  const t = useTheme();
+  console.log(t);
+
   const selectedItem = useRef<any>(null);
   const params = useRef<ParamProps>({
     relations: ["sample"].join(),

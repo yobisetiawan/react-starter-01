@@ -36,20 +36,22 @@ const Page = () => {
           Profile
         </Heading>
         <hr />
+        <div className="app-tab">
+          <Tablist marginBottom={16} flexBasis={240} marginRight={24}>
+            {tabs.map((tab, index) => (
+              <Tab
+                key={index}
+                onSelect={() => setSelectedIndex(index)}
+                isSelected={index === selectedIndex}
+                aria-controls={`panel-${index}`}
+              >
+                {tab.title}
+              </Tab>
+            ))}
+          </Tablist>
+        </div>
 
-        <Tablist marginBottom={16} flexBasis={240} marginRight={24}>
-          {tabs.map((tab, index) => (
-            <Tab
-              key={index}
-              onSelect={() => setSelectedIndex(index)}
-              isSelected={index === selectedIndex}
-              aria-controls={`panel-${index}`}
-            >
-              {tab.title}
-            </Tab>
-          ))}
-        </Tablist>
-        <Pane padding={16} background="tint1" flex="1">
+        <Pane padding={16} background="tint1" flex="1" border>
           {tabs.map((tab, index) => (
             <Pane
               key={index}
