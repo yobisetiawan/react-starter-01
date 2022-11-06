@@ -12,16 +12,16 @@ const AppFullLayout = ({ children }: Props) => {
       {children}
       <hr className="m-0"></hr>
       <Pane className="text-center" padding={10}>
-        <Link is={RouteLink} to="/" className="mx-1">
+        <Link is={RouteLink} to="/" className="mx-1 app-link">
           Home
         </Link>
-        <Link is={RouteLink} to="/about" className="mx-1">
+        <Link is={RouteLink} to="/about" className="mx-1 app-link">
           About
         </Link>
-        <Link is={RouteLink} to="/dashboard" className="mx-1">
+        <Link is={RouteLink} to="/dashboard" className="mx-1 app-link">
           Dashboard
         </Link>
-        <Link is={RouteLink} to="/login" className="mx-1">
+        <Link is={RouteLink} to="/login" className="mx-1 app-link">
           Login
         </Link>
       </Pane>

@@ -14,7 +14,7 @@ const Page = () => {
         </Heading>
         <hr />
         <Pane>
-          <Link is={RouteLink} to="/">
+          <Link is={RouteLink} to="/" className="app-link">
             Go to the home page
           </Link>
         </Pane>

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { Link, Spinner, Text } from "evergreen-ui";
+import { ErrorIcon, Link, Spinner, Text } from "evergreen-ui";
 import { useAtom } from "jotai";
 import React, { memo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -49,20 +49,26 @@ const Component = ({ children }: Props) => {
   }
 
   return (
-    <div className="app-loading d-flex justify-content-center align-items-center">
+    <div className="app-loading d-flex justify-content-center align-items-center text-center">
       <div>
         <div>
-          <Text>Unable to load user data!</Text>
+          <ErrorIcon size={42} color="red" marginBottom={10}>
+            {" "}
+          </ErrorIcon>
+        </div>
+        <div>
+          <Text>Unable to load data!</Text>
         </div>
         <div>
           <Link
             href="#"
+            className="app-link"
             onClick={() => {
               localStorage.removeItem("token");
               n("/login");
             }}
           >
-            Login
+            <strong>Go to Login</strong>
           </Link>
         </div>
       </div>

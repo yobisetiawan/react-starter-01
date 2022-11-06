@@ -61,7 +61,7 @@ const Page = () => {
           <div className="row justify-content-center">
             <div className="col-lg-6">
               <Heading is="h1" marginBottom={20} size={styles.fontSizeH1}>
-                Login {`Hello ${process.env.REACT_APP_NAME}`}
+                Login
               </Heading>
 
               <Card elevation={1} padding={20}>
@@ -92,10 +92,14 @@ const Page = () => {
               </Card>
 
               <div className="mt-3">
-                <Link is={RouteLink} to="/forgot-password" className="me-3">
+                <Link
+                  is={RouteLink}
+                  to="/forgot-password"
+                  className="me-3 app-link"
+                >
                   Forgot Password
                 </Link>
-                <Link is={RouteLink} to="/register" className="me-3">
+                <Link is={RouteLink} to="/register" className="me-3 app-link">
                   Register
                 </Link>
               </div>

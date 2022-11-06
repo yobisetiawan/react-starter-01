@@ -1,6 +1,5 @@
-import { Heading, Link, Pane, Paragraph } from "evergreen-ui";
+import { Heading, Paragraph } from "evergreen-ui";
 import { memo } from "react";
-import { Link as RouteLink } from "react-router-dom";
 import AppFullLayout from "../../components/layouts/AppFullLayout";
 import { styles } from "../../configs/styles";
 
@@ -11,20 +10,9 @@ const Page = () => {
         <div className="row justify-content-center">
           <div className="col-md-6">
             <Heading is="h1" marginBottom={20} size={styles.fontSizeH1}>
-              Home2
+              Home
             </Heading>
-            <Paragraph>
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book. It has
-              survived not only five centuries, but also the leap into
-              electronic typesetting, remaining essentially unchanged. It was
-              popularised in the 1960s with the release of Letraset sheets
-              containing Lorem Ipsum passages, and more recently with desktop
-              publishing software like Aldus PageMaker including versions of
-              Lorem Ipsum.
-            </Paragraph>
+            
             <Paragraph>
               Contrary to popular belief, Lorem Ipsum is not simply random text.
               It has roots in a piece of classical Latin literature from 45 BC,
@@ -39,11 +27,6 @@ const Page = () => {
               during the Renaissance. The first line of Lorem Ipsum, "Lorem
               ipsum dolor sit amet..", comes from a line in section 1.10.32.
             </Paragraph>
-            <Pane marginTop={20}>
-              <Link is={RouteLink} to="/">
-                Go to the home page
-              </Link>
-            </Pane>
           </div>
         </div>
       </div>

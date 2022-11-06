@@ -48,3 +48,10 @@ div[role="dialog"][data-state="entering"] {
     }
   }
 }
+
+.app-link {
+  color: #343434 !important;
+  &:focus {
+    box-shadow: 0 0 0 2px rgba($color: #343434, $alpha: 0.1) !important;
+  }
+}
