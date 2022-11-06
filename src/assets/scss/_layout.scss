@@ -48,3 +48,10 @@
 div[role="dialog"][data-state="entering"] {
   opacity: 0 !important;
 }
+
+.app-fixed-warning {
+  position: fixed;
+  bottom: 0;
+  left: 230px;
+  right: 0;
+}

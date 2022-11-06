@@ -18,6 +18,7 @@ import { useAtom } from "jotai";
 
 import { memo, useState } from "react";
 import { FieldValues, UseFormReturn } from "react-hook-form";
+import ReactQuill from "react-quill";
 import { styles } from "../../configs/styles";
 import v from "../../configs/validations";
 import { SampleCollectionAtom } from "../../storage/collection";
@@ -31,7 +32,8 @@ interface Props {
 const Component = ({ form, onSubmit, isLoading }: Props) => {
   const [listSample2] = useAtom(SampleCollectionAtom);
   const [selected, setSelected] = useState<any>(null);
-  const [values, setValues] = useState(["Kauri", "Willow"]);
+  const [values, setValues] = useState<string[]>([]);
+  const [rt, setRT] = useState("");
 
   const [options] = useState([
     { label: "Read-only", value: "read-only" },
@@ -175,6 +177,10 @@ const Component = ({ form, onSubmit, isLoading }: Props) => {
           options={options}
           onChange={(event) => setR(event.target.value)}
         />
+      </div>
+
+      <div className="mb-4">
+        <ReactQuill theme="snow" value={rt} onChange={setRT} />
       </div>
 
       <Button

@@ -4,6 +4,7 @@ import React, { memo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { API } from "../../configs/api";
 import { authUserAtom } from "../../storage/auth";
+import CheckVerifyEmail from "./CheckVerifyEmail";
 import GetCheckUser from "./GetCheckUser";
 
 interface Props {
@@ -46,11 +47,7 @@ const AppSidebar = ({ children }: Props) => {
 
           <div className="mt-5">
             <div>
-              <Avatar
-                src={user?.avatar?.url}
-                name={user?.name}
-                size={80}
-              />
+              <Avatar src={user?.avatar?.url} name={user?.name} size={80} />
             </div>
             <div>{user?.name}</div>
 
@@ -61,7 +58,9 @@ const AppSidebar = ({ children }: Props) => {
             </div>
           </div>
         </div>
-        <div className="app-main-content flex-grow-1">{children}</div>
+        <div className="app-main-content flex-grow-1">
+          <CheckVerifyEmail>{children}</CheckVerifyEmail>
+        </div>
       </div>
     </GetCheckUser>
   );
