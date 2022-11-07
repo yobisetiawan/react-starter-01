@@ -174,7 +174,7 @@ const Component = ({ listDt, params, handleForm, handleDelete }: Props) => {
             listDt.refetch();
           }}
           onPageChange={(page) => {
-            if (params.current.page !== page) {
+            if ((listDtRess?.meta?.current_page ?? 1) !== page) {
               params.current = { ...params.current, page: page };
               listDt.refetch();
             }

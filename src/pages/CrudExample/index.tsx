@@ -50,7 +50,7 @@ const Page = () => {
   };
 
   const saveDt = useMutation(
-    ["put-sample"],
+    ["save-sample"],
     () =>
       selectedItem.current?.id
         ? API.exampleSamplePut(selectedItem.current?.id, formDt.current)

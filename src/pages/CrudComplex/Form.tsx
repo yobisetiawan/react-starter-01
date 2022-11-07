@@ -6,8 +6,6 @@ import {
   Heading,
   RadioGroup,
   SelectField,
-  SelectMenu,
-  Strong,
   Switch,
   TagInput,
   TextareaField,
@@ -17,8 +15,9 @@ import {
 import { useAtom } from "jotai";
 
 import { memo, useState } from "react";
-import { FieldValues, UseFormReturn } from "react-hook-form";
+import { Controller, FieldValues, UseFormReturn } from "react-hook-form";
 import ReactQuill from "react-quill";
+import CustomField from "../../components/form/CustomField";
 import { styles } from "../../configs/styles";
 import v from "../../configs/validations";
 import { SampleCollectionAtom } from "../../storage/collection";
@@ -31,17 +30,12 @@ interface Props {
 
 const Component = ({ form, onSubmit, isLoading }: Props) => {
   const [listSample2] = useAtom(SampleCollectionAtom);
-  const [selected, setSelected] = useState<any>(null);
-  const [values, setValues] = useState<string[]>([]);
-  const [rt, setRT] = useState("");
 
   const [options] = useState([
     { label: "Read-only", value: "read-only" },
     { label: "Write", value: "write" },
     { label: "Restricted", value: "restricted" },
   ]);
-
-  const [r, setR] = useState("restricted");
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className={"p-4"}>
@@ -92,75 +86,159 @@ const Component = ({ form, onSubmit, isLoading }: Props) => {
         ))}
       </SelectField>
 
-      <div className="mb-4">
-        <div className="mb-2">
-          <Strong>Tag Input</Strong>
-        </div>
-        <TagInput
-          inputProps={{ placeholder: "Add trees..." }}
-          values={values}
-          onChange={(values) => {
-            setValues(values);
-          }}
-        />
-      </div>
-
-      <div className="mb-4">
-        <Combobox
-          width="100%"
-          items={["Banana", "Orange", "Apple", "Mango"]}
-          onChange={(selected) => console.log(selected)}
-          placeholder="Fruit"
-          selectedItem={"Banana"}
-          autocompleteProps={{
-            popoverMinWidth: 300,
-            // Used for the title in the autocomplete.
-            title: "Fruit",
-          }}
-        />
-      </div>
-
-      <Autocomplete
-        title="Fruits"
-        onChange={(changedItem) => console.log(changedItem)}
-        items={["Apple", "Apricot", "Banana", "Cherry", "Cucumber"]}
+      <CustomField
+        label="Checkbox"
+        validationMessage={v.getMessage(form.formState.errors, "is_agree")}
       >
-        {(props) => {
-          const { getInputProps, getRef, inputValue } = props;
-          return (
-            <TextInput
-              placeholder="Fruits"
-              ref={getRef}
-              {...getInputProps()}
-              value={inputValue}
+        <Controller
+          name="is_agree"
+          control={form.control}
+          rules={v.required}
+          render={({ field }) => (
+            <Checkbox
+              label="Aggre with anything"
+              checked={field.value}
+              onChange={(e) => {
+                field.onChange(!field.value);
+              }}
             />
-          );
-        }}
-      </Autocomplete>
-
-      <div className="mb-4">
-        <Checkbox label="Aggre with anything" checked={true} />
-      </div>
-
-      <div className="mb-4">
-        <Switch />
-      </div>
-
-      <div
-        className="mb-4"
-        style={{ position: "relative", overflow: "hidden" }}
-      >
-        <RadioGroup
-          label="Permissions"
-          value={r}
-          options={options}
-          onChange={(event) => setR(event.target.value)}
+          )}
         />
-      </div>
+      </CustomField>
 
-      <div className="mb-4">
-        <ReactQuill theme="snow" value={rt} onChange={setRT} />
-      </div>
+      <CustomField
+        label="Switch"
+        validationMessage={v.getMessage(form.formState.errors, "is_on")}
+      >
+        <Controller
+          name="is_on"
+          control={form.control}
+          rules={v.required}
+          render={({ field }) => (
+            <Switch
+              checked={field.value}
+              onChange={(e) => {
+                field.onChange(!field.value);
+              }}
+            />
+          )}
+        />
+      </CustomField>
+
+      <CustomField
+        label="Tag Input"
+        validationMessage={v.getMessage(form.formState.errors, "tags")}
+      >
+        <Controller
+          name="tags"
+          control={form.control}
+          rules={v.required}
+          render={({ field }) => (
+            <TagInput
+              inputProps={{ placeholder: "Add trees..." }}
+              values={field.value}
+              onChange={(values) => {
+                field.onChange(values);
+              }}
+            />
+          )}
+        />
+      </CustomField>
+
+      <CustomField
+        label="Combobox"
+        validationMessage={v.getMessage(form.formState.errors, "fruit")}
+      >
+        <Controller
+          name="fruit"
+          control={form.control}
+          rules={v.required}
+          render={({ field }) => (
+            <Combobox
+              width="100%"
+              items={["Banana", "Orange", "Apple", "Mango"]}
+              onChange={(selected) => field.onChange(selected)}
+              placeholder="Fruit"
+              //selectedItem={fruit}
+              initialSelectedItem={field.value}
+              autocompleteProps={{
+                popoverMinWidth: 300,
+                // Used for the title in the autocomplete.
+                title: "Fruit",
+              }}
+            />
+          )}
+        />
+      </CustomField>
+
+      <CustomField
+        label="Combobox"
+        validationMessage={v.getMessage(form.formState.errors, "procesor")}
+      >
+        <Controller
+          name="procesor"
+          control={form.control}
+          rules={v.required}
+          render={({ field }) => (
+            <Autocomplete
+              title="Autocomplete"
+              onChange={(selected) => field.onChange(selected)}
+              items={["M1", "Intel", "AMD"]}
+              initialInputValue={field.value}
+            >
+              {(props) => {
+                const { getInputProps, getRef, inputValue } = props;
+                return (
+                  <TextInput
+                    placeholder="Procesors"
+                    ref={getRef}
+                    {...getInputProps()}
+                    value={inputValue}
+                  />
+                );
+              }}
+            </Autocomplete>
+          )}
+        />
+      </CustomField>
+
+      <CustomField
+        label="Permissions"
+        validationMessage={v.getMessage(form.formState.errors, "permission")}
+      >
+        <Controller
+          name="permission"
+          control={form.control}
+          rules={v.required}
+          render={({ field }) => (
+            <RadioGroup
+              options={options}
+              value={field.value}
+              onChange={(event) => field.onChange(event.target.value)}
+            />
+          )}
+        />
+      </CustomField>
+
+      <CustomField
+        label="Text Editor"
+        validationMessage={v.getMessage(form.formState.errors, "text_editor")}
+      >
+        <Controller
+          name="text_editor"
+          control={form.control}
+          rules={v.required}
+          render={({ field }) => (
+            <ReactQuill
+              theme="snow"
+              value={field.value}
+              onChange={(v) => {
+                field.onChange(v);
+              }}
+            />
+          )}
+        />
+      </CustomField>
 
       <Button
         type="submit"

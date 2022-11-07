@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
- 
+
 import dayjs from "dayjs";
-import { Dialog, Heading, Pane, SideSheet, toaster, useTheme } from "evergreen-ui";
+import { Dialog, Heading, Pane, SideSheet, toaster } from "evergreen-ui";
 import { memo, Suspense, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import AppSidebar from "../../components/layouts/AppSidebar";
@@ -13,9 +13,6 @@ import Form from "./Form";
 import TableList from "./TableList";
 
 const Page = () => {
-  const t = useTheme();
-  console.log(t);
-
   const selectedItem = useRef<any>(null);
   const params = useRef<ParamProps>({
     relations: ["sample"].join(),
@@ -32,6 +29,13 @@ const Page = () => {
     sample_id: "",
     date: "",
     date_time: "",
+    is_agree: false,
+    is_active: false,
+    tags: [] as string[],
+    fruit: "",
+    procesor: "",
+    text_editor: "",
+    permission: "",
   };
 
   const formDt = useRef(defaultForm);
@@ -58,7 +62,7 @@ const Page = () => {
   };
 
   const saveDt = useMutation(
-    ["put-sample-complex"],
+    ["save-sample-complex"],
     () =>
       selectedItem.current?.id
         ? API.exampleSample2Put(selectedItem.current?.id, formDt.current)
@@ -100,6 +104,13 @@ const Page = () => {
         sample_id: item.sample?.id ?? "",
         date: item.date,
         date_time: item.date_time,
+        text_editor: item.text_editor,
+        is_on: item.is_on,
+        is_agree: item.is_agree,
+        fruit: item.fruit,
+        procesor: item.procesor,
+        tags: item.data_extra?.tags ?? [],
+        permission: item.permission,
       });
     } else {
       selectedItem.current = null;
